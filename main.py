@@ -50,7 +50,6 @@ def save_key(k):
     set_to_local_storage('url_key', st.session_state['url_key'])
 
 
-
 def ask(messages, engine, plugins=[], plugin_sets=[]):
     json_data = {
         'prompt': messages,
@@ -71,7 +70,7 @@ def ask(messages, engine, plugins=[], plugin_sets=[]):
             if "event: signal" in res:
                 break
             if res.startswith("data"):
-                yield res.replace("data:", "")
+                yield res.replace("data:", "").replace("[NEWLINE]", "\n").replace("[SPACE]", " ")
 
 
 if 'url_key' not in st.session_state:
