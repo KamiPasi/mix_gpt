@@ -126,7 +126,10 @@ with st.sidebar:
             st.session_state[f"{model_}_con"] = json.loads(st.session_state.local_storage.get(f"{model_}_con", "[]"))
 
     model = st.selectbox("选择模型:", st.session_state.models)
-
+    plugin = st.multiselect("选择插件:", ["imagegen", "chatmap", "browsing", "translate", "chatpdf", "qr", "promptpro", "chatvideo", "scholar", "oneplayer", "weather", "news", "photomagic", "podcasts", "tv", "chatemail", "calculator", "photomagic","chatgdoc", "chatdrive", "calendar","chatgslide", "chatgsheet"])
+    if len(plugin) > 3:
+        st.warning("只能选3个")
+        plugin = plugin[:3]
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -181,7 +184,7 @@ if prompt:
                 else:
                     message_placeholder.markdown("未知指令!")
             else:
-                for chunk in ask(st.session_state.messages, model):
+                for chunk in ask(st.session_state.messages, model, plugins=plugin, plugin_sets=plugin+['web_search']):
                     # print(chunk, end="")
                     if chunk:
                         full_response += chunk + ""
